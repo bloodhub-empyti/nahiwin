@@ -24,7 +24,6 @@ local Tabs = {
     About = Window:AddTab({ Title = "About", Icon = "info" }),
     Farm = Window:AddTab({ Title = "Farm", Icon = "box" }),
     Main = Window:AddTab({ Title = "Main", Icon = "home" }),
-    Main2 = Window:AddTab({ Title = "Main2", Icon = "rbxassetid://109995816235688" }),
     Event = Window:AddTab({ Title = "Event", Icon = "bell" }),
     Player = Window:AddTab({ Title = "Player", Icon = "user" }),
     Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
