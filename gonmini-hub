@@ -362,7 +362,7 @@ if ExistingUI then
 end
 
 local DragUI = Instance.new("ScreenGui")
-DragUI.Name = "HutaoHubMinimizeUI"
+DragUI.Name = "GonminiMinimizeUI"
 DragUI.ResetOnSpawn = false
 DragUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 DragUI.Parent = CoreGui
@@ -375,7 +375,7 @@ Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Button.BackgroundTransparency = 0.3
 Button.BorderSizePixel = 0
 Button.ClipsDescendants = true
-Button.Image = "rbxassetid://122312005360431"
+Button.Image = "rbxassetid://82795327169782"
 Button.ScaleType = Enum.ScaleType.Fit
 Button.Active = true
 Button.ZIndex = 1000
@@ -465,7 +465,7 @@ Button.InputChanged:Connect(function(input)
     end
 end) 
 
-local ESP = getgenv().__HutaoShared.ESP
+local ESP = getgenv().__GonminiShared.ESP
 
 local Options = Fluent.Options
 
