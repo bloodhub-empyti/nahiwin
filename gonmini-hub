@@ -3,7 +3,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "gonmini hub| Forsaken |",
+    Title = "Gonmini hub [Rework] | Forsaken |",
     SubTitle = "Version 1.1.5",
     Search = true,
     Icon = "rbxassetid://109995816235688",
@@ -16,9 +16,9 @@ local Window = Fluent:CreateWindow({
     UserInfo = false,
     UserInfoTop = false,
     UserInfoTitle = game:GetService("Players").LocalPlayer.DisplayName,
-    UserInfoSubtitle = "303",
+    UserInfoSubtitle = "by ER",
     UserInfoSubtitleColor = Color3.fromRGB(71, 123, 255)
-})bell
+})
 
 local Tabs = {
     About = Window:AddTab({ Title = "About", Icon = "info" }),
@@ -375,7 +375,7 @@ Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Button.BackgroundTransparency = 0.3
 Button.BorderSizePixel = 0
 Button.ClipsDescendants = true
-Button.Image = "rbxassetid://82795327169782"
+Button.Image = "rbxassetid://122312005360431"
 Button.ScaleType = Enum.ScaleType.Fit
 Button.Active = true
 Button.ZIndex = 1000
@@ -471,10 +471,10 @@ local Options = Fluent.Options
 
     Tabs.About:AddParagraph({
         Title = "Dev Script",
-        Content = "?? HTZ GAMING - Admin\n?? NTK - Obfuscate\n?? Krop VN - Find Remote\n?? Shade Vex - Make Anti Ban\n?? RimuruHRB - Make Gui\n?? Yangho VN - Fix Bug"
+        Content = "• HTZ GAMING - Admin\n• NTK - Obfuscate\n• Krop VN - Find Remote\n• Shade Vex - Make Anti Ban\n• RimuruHRB - Make Gui\n• Yangho VN - Fix Bug"
     })
 
-    Tabs.About:AddSection("?? Links")
+    Tabs.About:AddSection("↳ Links")
 
     Tabs.About:AddButton({
         Title = "Discord",
@@ -504,11 +504,11 @@ local Options = Fluent.Options
         end
     })
 
-    Tabs.About:AddSection("?? Update")
+    Tabs.About:AddSection("↳ Update")
 
     Tabs.About:AddParagraph({
         Title = "Version 1.0.0",
-        Content = "?? Rework All Script"
+        Content = "• Rework All Script"
     })
 
 local function PressKey(key)
@@ -791,7 +791,7 @@ Tabs.Farm:AddToggle("SurvivorsAutoFarmV2", {
     end
 end)
 
-    Tabs.Farm:AddSection("?? Generator")
+    Tabs.Farm:AddSection("↳ Generator")
 
 local solveGeneratorCooldown = false
 local AutoFinishGen = false
@@ -876,7 +876,7 @@ Tabs.Farm:AddInput("GenDelayInput", {
     end
 })
 
-    Tabs.Farm:AddSection("?? Items")
+    Tabs.Farm:AddSection("↳ Items")
 
 local function pickUpNearest()
     local map = MapFolder or WaitForMap()
@@ -928,7 +928,7 @@ Tabs.Farm:AddToggle("ItemPick", {
     end)
 end)
 
-    Tabs.Main:AddSection("?? Eliot")
+    Tabs.Main:AddSection("↳ Eliot")
 
 local toggleFlag = Instance.new("BoolValue")
 toggleFlag.Name = "EliotPizzaAim_ToggleFlag"
@@ -1149,7 +1149,7 @@ task.spawn(function()
     end
 end)
 
-Tabs.Main:AddSection("?? Two Time")
+Tabs.Main:AddSection("↳ Two Time")
 
 local Mode = "AI Aimbot"
 local checkRadius = 18
@@ -1449,7 +1449,7 @@ LocalPlayer.CharacterAdded:Connect(function()
     task.wait(1)
 end)
 
-    Tabs.Main:AddSection("?? 007n7")
+    Tabs.Main:AddSection("↳ 007n7")
 
 local ANIM_ID = "rbxassetid://75804462760596"
 local InvisibleTrack = nil
@@ -1554,7 +1554,7 @@ Tabs.Main:AddToggle("InvisibleCloneV2", {
     end
 })
 
-Tabs.Main:AddSection("?? Veeronica")
+Tabs.Main:AddSection("↳ Veeronica")
 
 Tabs.Main:AddToggle("AutoTrick", {
     Title = "Auto Trick V2",
@@ -1659,7 +1659,7 @@ Tabs.Main:AddToggle("AutoTrick", {
     end
 })
 
-Tabs.Main:AddSection("?? Chance")
+Tabs.Main:AddSection("↳ Chance")
 
 _G.AIMBOT_ACTIVE = false
 _G.AIM_USE_OFFSET = true
@@ -1951,7 +1951,7 @@ spawn(function()
     end
 end)
 
-Tabs.Main:AddSection("?? 1x1x1x1")
+Tabs.Main:AddSection("↳ 1x1x1x1")
 
 _G.MASS_AIM_MODE = "One Player"
 _G.MASS_TOGGLE = false
@@ -2049,7 +2049,7 @@ Tabs.Main:AddToggle("MassInfectionAimbot",{
     _G.MASS_TOGGLE=v
 end)
 
-Tabs.Main:AddSection("?? Guest1337")
+Tabs.Main:AddSection("↳ Guest1337")
 
 function isKiller(player)
     local ok, killersFolder = pcall(getKillersFolder)
@@ -2593,11 +2593,11 @@ Tabs.Main:AddInput("CustomAnim", {
 Tabs.Main:AddToggle("EnableCustomAnim", { Title = "Enable Custom Animation", Default = false })
     :OnChanged(function(val) customPunchEnabled = val end)
 
-Tabs.Event:AddSection("?? Halloween")
+Tabs.Event:AddSection("↳ Halloween")
 
 Tabs.Event:AddButton({
     Title = "TP to Shop",
-    Description = "Teleport ?ến khu Shop",
+    Description = "Teleport đến khu Shop",
     Callback = function()
         local hrp = getHRP()
         if hrp and hrp:IsA("BasePart") then
@@ -3010,16 +3010,16 @@ Tabs.Player:AddToggle("InfiniteZoom", {
         if Value then
             player.CameraMaxZoomDistance = math.huge
             player.CameraMinZoomDistance = 0.5
-            print("[ZoomCam] Infinite Zoom Enabled ??")
+            print("[ZoomCam] Infinite Zoom Enabled ✅")
         else
             player.CameraMaxZoomDistance = 128
             player.CameraMinZoomDistance = 0.5
-            print("[ZoomCam] Infinite Zoom Disabled ??")
+            print("[ZoomCam] Infinite Zoom Disabled ❌")
         end
     end
 })
 
-Tabs.Player:AddSection("?? Hitbox")
+Tabs.Player:AddSection("↳ Hitbox")
 
 repeat task.wait() until game:IsLoaded()
 
@@ -3038,7 +3038,7 @@ Tabs.Player:AddSlider("ForsakenReachSlider", {
     Title = "Distance",
     Default = getgenv().NearestDist,
     Min = 10,
-    Max = 3000,
+    Max = 350,
     Rounding = 0,
     Save = true,
     Suffix = " studs"
@@ -3289,7 +3289,7 @@ end)
 
 local WalkSpeed = { Value = 16, Active = false, Loop = nil }
 
-Tabs.Player:AddSection("?? Walk Speed")
+Tabs.Player:AddSection("↳ Walk Speed")
 
 Tabs.Player:AddSlider("PlayerSpeedSlider", {
     Title = "Set Speed",
@@ -3350,7 +3350,7 @@ end)
 
 local TeleportSpeed = { Value = 50, Max = 300, Active = false }
 
-Tabs.Player:AddSection("?? Teleport Speed")
+Tabs.Player:AddSection("↳ Teleport Speed")
 
 Tabs.Player:AddSlider("TeleportSpeedSlider", {
     Title = "Set Speed",
@@ -3400,7 +3400,7 @@ Tabs.Visual:AddToggle("ESP_Clone", {
     end
 })
 
-Tabs.Visual:AddSection("?? Player")
+Tabs.Visual:AddSection("↳ Player")
 
 ESP:RegisterType("Player", Color3.fromRGB(0, 255, 255), function(obj)
     local plr = Players:GetPlayerFromCharacter(obj)
@@ -3443,7 +3443,7 @@ Tabs.Visual:AddToggle("ESP_Killers", {
     end
 })
 
-Tabs.Visual:AddSection("?? Other")
+Tabs.Visual:AddSection("↳ Other")
 
 ESP:RegisterType("Generator", Color3.fromRGB(255,255,255), function(obj)
     if not (obj and obj:IsA("Model") and obj.Name == "Generator") then return false end
@@ -3495,7 +3495,7 @@ ESP:RegisterType("Sentry", Color3.fromRGB(128, 128, 128), function(obj)
     return obj:IsA("Model") and obj.Name:lower():find("sentry")
 end, false)
 
-Tabs.Visual:AddSection("?? Buildman")
+Tabs.Visual:AddSection("↳ Buildman")
 
 Tabs.Visual:AddToggle("ESP_Dispenser", {
     Title = "ESP Dispenser",
@@ -3521,7 +3521,7 @@ ESP:RegisterType("Subspace", Color3.fromRGB(160, 32, 240), function(obj)
     return obj:IsA("Model") and obj.Name == "SubspaceTripmine"
 end, false)
 
-Tabs.Visual:AddSection("?? Tapt/Trap")
+Tabs.Visual:AddSection("↳ Tapt/Trap")
 
 Tabs.Visual:AddToggle("ESP_Tripwire", {
     Title = "ESP Tripwire",
@@ -3646,7 +3646,7 @@ FogToggle:OnChanged(function(Value)
     end
 end)
 
-Tabs.Misc:AddSection("?? Game Play")
+Tabs.Misc:AddSection("↳ Game Play")
 
 local antiAFKCons = {}
 
@@ -3662,7 +3662,7 @@ if getconnections then
                     antiAFKCons[c] = true
                     c:Disable()
                 end
-                print("[AntiAFK] ?ã bật, bạn s�? không b�? kick AFK.")
+                print("[AntiAFK] Đã bật, bạn sẽ không bị kick AFK.")
             else
                 for c,_ in pairs(antiAFKCons) do
                     if c and c.Enable then
@@ -3672,12 +3672,12 @@ if getconnections then
                     end
                 end
                 antiAFKCons = {}
-                print("[AntiAFK] ?ã tắt, Roblox s�? x�? lý AFK bình thường.")
+                print("[AntiAFK] Đã tắt, Roblox sẽ xử lý AFK bình thường.")
             end
         end
     })
 else
-    warn("[Anti-AFK] Executor không h�? tr�? getconnections, toggle b�? vô hiệu.")
+    warn("[Anti-AFK] Executor không hỗ trợ getconnections, toggle bị vô hiệu.")
 end
 
 local ASConfigs = {
@@ -3798,12 +3798,12 @@ Tabs.Misc:AddToggle("AutoClosePopupV2", {
     end
 })
 
-Tabs.Misc:AddSection("?? Fix Lag")
+Tabs.Misc:AddSection("↳ Fix Lag")
 
 local function ServerHop()
     local placeId = game.PlaceId
     local jobId = game.JobId
-    print("[ServerHop] ?ang rời server hiện tại...")
+    print("[ServerHop] Đang rời server hiện tại...")
 
     local success, err = pcall(function()
         TeleportService:Teleport(placeId, LocalPlayer)
@@ -3813,11 +3813,11 @@ local function ServerHop()
         if Fluent and Fluent.Notify then
             Fluent:Notify({
                 Title = "Rejoin Starting",
-                Content = "Bắt ?ầu V?o Máy Ch�? ?ã Fix Lag",
+                Content = "Bắt Đầu Vào Máy Chủ Đã Fix Lag",
                 Duration = 3
             })
         else
-            print("[ServerHop] ?ang chuyển server...")
+            print("[ServerHop] Đang chuyển server...")
         end
     else
         warn("[ServerHop] Lỗi khi Teleport:", err)
@@ -3837,7 +3837,7 @@ Tabs.Misc:AddButton({
         if Fluent and Fluent.Notify then
             Fluent:Notify({
                 Title = "Rejoin Settings",
-                Content = "?ang Giảm Lag Cho Các Máy Ch�?...",
+                Content = "Đang Giảm Lag Cho Các Máy Chủ...",
                 Duration = 2
             })
         end
@@ -3961,18 +3961,18 @@ AexecToggle:OnChanged(function(Value)
 task.wait(3)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()
 ]]
-                    queue_on_teleport(HutaoHubScript1)
+                    queue_on_teleport(GonminihubScript1)
                 end
             end)
         end)
         Fluent:Notify({
-            Title = "gonmini hub",
+            Title = "Gonmini Hub",
             Content = "Auto execute is enabled!",
             Duration = 5
         })
     else
         Fluent:Notify({
-            Title = "gonmini hub",
+            Title = "Gonmini Hub",
             Content = "Auto execute is disabled!",
             Duration = 5
         })
@@ -3986,13 +3986,13 @@ SaveManager:IgnoreThemeSettings()
 
 SaveManager:SetIgnoreIndexes({})
 
-InterfaceManager:SetFolder("gonmini hub")
-SaveManager:SetFolder("gonmini/Forsaken")
+InterfaceManager:SetFolder("Hutao Hub")
+SaveManager:SetFolder("Hutao Hub/Forsaken")
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
 Window:SelectTab(1)
 
-Fluent:Notify({ Title = "gonmini hub", Content = "Forsaken script loaded successfully!", Duration = 5 })
+Fluent:Notify({ Title = "Hutao Hub", Content = "Forsaken script loaded successfully!", Duration = 5 })
 SaveManager:LoadAutoloadConfig()
