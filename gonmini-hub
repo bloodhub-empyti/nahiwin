@@ -473,11 +473,6 @@ local Options = Fluent.Options
         Content = "• baucua.c - Admin\n• Nh_starlight -  fix bug/n"
     })
 
-Tabs.About:AddParagraph({
-        Title = "Cần người làm chung với tôi"
-        Content = "• fix bug/n• thu thập rbx hoặc tạo ảnh/n"
-    })
-
     Tabs.About:AddSection("↳ Links")
     Tabs.About:AddButton({
         Title = "Discord",
@@ -2723,7 +2718,7 @@ getgenv().ForsakenReachEnabled = getgenv().ForsakenReachEnabled or false
 getgenv().NearestDist = getgenv().NearestDist or 120
 
 Tabs.Player:AddToggle("ForsakenReachToggle", {
-    Title = "Hitbox Devil",
+    Title = "Hitbox",
     Default = getgenv().ForsakenReachEnabled,
     Save = true
 }):OnChanged(function(Value)
