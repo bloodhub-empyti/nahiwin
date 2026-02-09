@@ -3,7 +3,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Gonmini Hub[Beta] | Forsaken |",
+    Title = "Gonmini Hub[Beta ☄] | Forsaken |",
     SubTitle = "Version 0.0.56",
     Search = true,
     Icon = "rbxassetid://82795327169782",
@@ -374,7 +374,7 @@ Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Button.BackgroundTransparency = 0.3
 Button.BorderSizePixel = 0
 Button.ClipsDescendants = true
-Button.Image = "rbxassetid://82795327169782"
+Button.Image = "rbxassetid://114853226217856"
 Button.ScaleType = Enum.ScaleType.Fit
 Button.Active = true
 Button.ZIndex = 1000
