@@ -1,4 +1,4 @@
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/htzgamingssr/Hutao-V3/refs/heads/main/UI-Hutao-Hub-V3.txt"))()
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodhub-empyti/mod/refs/heads/main/theme"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
