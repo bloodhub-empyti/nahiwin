@@ -24,7 +24,6 @@ local Tabs = {
     About = Window:AddTab({ Title = "About", Icon = "info" }),
     Farm = Window:AddTab({ Title = "Farm", Icon = "box" }),
     Main = Window:AddTab({ Title = "Main", Icon = "home" }),
-    Event = Window:AddTab({ Title = "Event", Icon = "bell" }),
     Player = Window:AddTab({ Title = "Player", Icon = "user" }),
     Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "menu" }),
@@ -362,7 +361,7 @@ if ExistingUI then
 end
 
 local DragUI = Instance.new("ScreenGui")
-DragUI.Name = "HutaoHubMinimizeUI"
+DragUI.Name = "GonminiHubMinimizeUI"
 DragUI.ResetOnSpawn = false
 DragUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 DragUI.Parent = CoreGui
@@ -465,13 +464,13 @@ Button.InputChanged:Connect(function(input)
     end
 end) 
 
-local ESP = getgenv().__HutaoShared.ESP
+local ESP = getgenv().__GonminiShared.ESP
 
 local Options = Fluent.Options
 
     Tabs.About:AddParagraph({
         Title = "Dev Script",
-        Content = "• HTZ GAMING - Admin\n• Nh_starlight -  fix bug/n"
+        Content = "• baucua.c - Admin\n• Nh_starlight -  fix bug/n"
     })
 
     Tabs.About:AddSection("↳ Links")
@@ -2592,313 +2591,6 @@ Tabs.Main:AddInput("CustomAnim", {
 
 Tabs.Main:AddToggle("EnableCustomAnim", { Title = "Enable Custom Animation", Default = false })
     :OnChanged(function(val) customPunchEnabled = val end)
-
-Tabs.Event:AddSection("↳ Halloween")
-
-Tabs.Event:AddButton({
-    Title = "TP to Shop",
-    Description = "Teleport đến khu Shop",
-    Callback = function()
-        local hrp = getHRP()
-        if hrp and hrp:IsA("BasePart") then
-            local ok = pcall(function() hrp.CFrame = CFrame.new(-3540.36, -392.73, 231.53) end)
-            if not ok then return end
-        end
-    end,
-})
-
-local allowedModels = {
-    ["dumsek"]=true, ["toon dusek"]=true, ["dusek"]=true,
-    ["umdum"]=true, ["doothsek"]=true
-}
-
-local blockedCenter = Vector3.new(-3485.02, 4.48, 217.77)
-local blockedRadius = 500
-
-local function safeLower(s)
-    if type(s) ~= "string" then return "" end
-    return s:lower()
-end
-
-local function getModelPart(model)
-    if not model then return nil end
-    local a = model:FindFirstChild("HumanoidRootPart")
-    if a and a:IsA("BasePart") then return a end
-    local b = model.PrimaryPart
-    if b and b:IsA("BasePart") then return b end
-    local c = model:FindFirstChildWhichIsA("BasePart")
-    if c then return c end
-    return nil
-end
-
-local function isValidSukkar(model)
-    if not model or not model:IsA("Model") or not model:IsDescendantOf(Workspace) then
-        return false
-    end
-    if not allowedModels[safeLower(model.Name)] then
-        return false
-    end
-    local part = getModelPart(model)
-    if not part then return false end
-    local ok, mag = pcall(function() return (part.Position - blockedCenter).Magnitude end)
-    if not ok or type(mag) ~= "number" then return false end
-    return mag > blockedRadius
-end
-
-ESP:RegisterType("Sukkars", Color3.fromRGB(0, 85, 255), isValidSukkar, false)
-
-Tabs.Event:AddToggle("ESPSukkarsToggle", {
-    Title = "ESP Sukkars",
-    Default = false,
-    Callback = function(state)
-        ESP:SetEnabled("Sukkars", state)
-    end
-})
-
-do
-    local oldCreate = ESP.Create
-    ESP.Create = function(self, model, typeName)
-        pcall(function() oldCreate(self, model, typeName) end)
-
-        if typeName ~= "Sukkars" then return end
-        if not model or not model:IsA("Model") then return end
-
-        local part = getModelPart(model)
-        if not part then return end
-
-        if not part:FindFirstChild("_TouchedFlag") then
-            local flag = Instance.new("BoolValue")
-            flag.Name = "_TouchedFlag"
-            flag.Parent = part
-
-            part.Touched:Connect(function(hit)
-                local char = getChar()
-                if not char or not hit then return end
-                local ok = pcall(function()
-                    if hit:IsDescendantOf(char) then
-                        ESP:Remove(model)
-                    end
-                end)
-                if not ok then return end
-            end)
-        end
-    end
-end
-
-local cleanupConn = nil
-do
-    local acc = 0
-    local interval = 0.15
-
-    local function runCleanup(dt)
-        acc = acc + dt
-        if acc < interval then return end
-        acc = 0
-
-        local hrp = getHRP()
-        if not (hrp and hrp:IsA("BasePart")) then return end
-
-        if not ESP or type(ESP.Objects) ~= "table" then return end
-
-        local keys = {}
-        for k,v in pairs(ESP.Objects) do
-            keys[#keys+1] = k
-        end
-
-        for _, model in ipairs(keys) do
-            local data = ESP.Objects[model]
-            if data and data.type == "Sukkars" then
-                local part = getModelPart(model)
-                if not part then
-                    pcall(function() ESP:Remove(model) end)
-                else
-                    local ok, dist = pcall(function() return (hrp.Position - part.Position).Magnitude end)
-                    if ok and type(dist) == "number" then
-                        if dist <= 5 or dist > 1200 then
-                            pcall(function() ESP:Remove(model) end)
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    local function start()
-        if cleanupConn then return end
-        cleanupConn = RunService.Heartbeat:Connect(runCleanup)
-    end
-
-    local function stop()
-        if cleanupConn then
-            cleanupConn:Disconnect()
-            cleanupConn = nil
-        end
-    end
-
-    start()
-end
-
-local autoConn = nil
-local TargetNames = {"dumsek","toon dusek","umdum","dusek","doothsek"}
-local ScanInterval = 0.5
-local TeleportDelay = 0.25
-local HeightSafe = 5
-
-local visitedModels = {}
-local currentTarget = nil
-local autoEnabled = false
-
-local function getModelCFrame(model)
-    if not model then return nil end
-    local part = getModelPart(model)
-    if part then return part.CFrame end
-    if type(model.GetPivot) == "function" then
-        local ok, pivot = pcall(function() return model:GetPivot() end)
-        if ok then return pivot end
-    end
-    return nil
-end
-
-local function isAutoValid(model)
-    if not model or not model:IsA("Model") then return false end
-    local low = safeLower(model.Name)
-    for i = 1, #TargetNames do
-        if low == TargetNames[i] then
-            local cf = getModelCFrame(model)
-            if not cf then return false end
-            local ok, mag = pcall(function() return (cf.Position - blockedCenter).Magnitude end)
-            if ok and type(mag) == "number" then
-                return mag > blockedRadius
-            end
-            return false
-        end
-    end
-    return false
-end
-
-local function findTargets()
-    local out = {}
-    for _, obj in ipairs(Workspace:GetDescendants()) do
-        if obj:IsA("Model") and isAutoValid(obj) then
-            out[#out+1] = obj
-        end
-    end
-    return out
-end
-
-local function isTouchingTarget(target)
-    local hrp = getHRP()
-    if not (hrp and hrp:IsA("BasePart")) then return false end
-    if not target then return false end
-    local part = getModelPart(target)
-    if not part then return false end
-    local ok, dist = pcall(function() return (hrp.Position - part.Position).Magnitude end)
-    return ok and type(dist) == "number" and dist <= 6
-end
-
-local function teleportToNext()
-    local hrp = getHRP()
-    if not (hrp and hrp:IsA("BasePart")) then return end
-
-    for k, _ in pairs(visitedModels) do
-        if not (k and type(k.IsDescendantOf) == "function" and k:IsDescendantOf(Workspace)) then
-            visitedModels[k] = nil
-        end
-    end
-
-    local all = findTargets()
-    local available = {}
-    for _, m in ipairs(all) do
-        if not visitedModels[m] then
-            available[#available+1] = m
-        end
-    end
-
-    if #available == 0 then
-        for kk, _ in pairs(visitedModels) do visitedModels[kk] = nil end
-        return
-    end
-
-    table.sort(available, function(a, b)
-        local ca = getModelCFrame(a)
-        local cb = getModelCFrame(b)
-        if not ca and not cb then return false end
-        if not ca then return false end
-        if not cb then return true end
-        local da = (hrp.Position - ca.Position).Magnitude
-        local db = (hrp.Position - cb.Position).Magnitude
-        return da < db
-    end)
-
-    currentTarget = available[1]
-    if currentTarget then
-        local cf = getModelCFrame(currentTarget)
-        if cf and cf.Position then
-            local pos = cf.Position
-            if pos.Y < -10 then pos = Vector3.new(pos.X, HeightSafe, pos.Z) end
-            pcall(function() hrp.CFrame = CFrame.new(pos + Vector3.new(0,3,0)) end)
-        end
-    end
-end
-
-do
-    local acc = 0
-    local function runAuto(dt)
-        acc = acc + dt
-        if acc < ScanInterval then return end
-        acc = 0
-
-        if not autoEnabled then return end
-        if not getChar() then return end
-
-        if currentTarget and (not (currentTarget and currentTarget:IsDescendantOf(Workspace))) then
-            currentTarget = nil
-            task.wait(TeleportDelay)
-            teleportToNext()
-            return
-        end
-
-        if currentTarget and isTouchingTarget(currentTarget) then
-            visitedModels[currentTarget] = true
-            task.wait(TeleportDelay)
-            teleportToNext()
-            return
-        end
-
-        if not currentTarget then
-            teleportToNext()
-            return
-        end
-    end
-
-    local function startAuto()
-        if autoConn then return end
-        autoConn = RunService.Heartbeat:Connect(runAuto)
-    end
-
-    local function stopAuto()
-        if autoConn then
-            autoConn:Disconnect()
-            autoConn = nil
-        end
-    end
-
-    Tabs.Event:AddToggle("AutoFarmSukkars", {
-        Title = "Auto Farm Sukkars",
-        Default = false,
-        Callback = function(state)
-            autoEnabled = state and true or false
-            if autoEnabled then
-                startAuto()
-            else
-                currentTarget = nil
-                for k,_ in pairs(visitedModels) do visitedModels[k] = nil end
-                stopAuto()
-            end
-        end,
-    })
-end
-
 
 local ActiveNoStun = false
 local noStunLoop
