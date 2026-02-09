@@ -17,7 +17,7 @@ local Window = Fluent:CreateWindow({
     UserInfoTop = false,
     UserInfoTitle = game:GetService("Players").LocalPlayer.DisplayName,
     UserInfoSubtitle = "by Er",
-    UserInfoSubtitleColor = Color3.fromRGB(71, 123, 255)
+    UserInfoSubtitleColor = Color3.fromRGB(130, 123, 155)
 })
 
 local Tabs = {
@@ -369,7 +369,7 @@ DragUI.Parent = CoreGui
 local Button = Instance.new("ImageButton")
 Button.Parent = DragUI
 Button.Size = UDim2.new(0, 40, 0, 40)
-Button.Position = UDim2.new(0, 10, 1, -95)
+Button.Position = UDim2.new(0, 10, 0.35, -95)
 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Button.BackgroundTransparency = 0.3
 Button.BorderSizePixel = 0
