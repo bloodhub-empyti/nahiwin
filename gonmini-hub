@@ -24,6 +24,7 @@ local Tabs = {
     About = Window:AddTab({ Title = "About", Icon = "info" }),
     Farm = Window:AddTab({ Title = "Farm", Icon = "box" }),
     Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    Custom = Window:AddTab({ Title = "Custom", Icon = "brush" }),
     Player = Window:AddTab({ Title = "Player", Icon = "user" }),
     Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "menu" }),
@@ -1174,7 +1175,7 @@ end)
 
 local enabled = false
 Tabs.Main:AddToggle("AutoBackstab", {
-    Title = "Auto Backstab V2",
+    Title = "Auto Backstab",
     Default = false
 }):OnChanged(function(state)
     enabled = state
@@ -2622,6 +2623,541 @@ Tabs.Player:AddToggle("NoStun", {
             end)
         end
     end
+})
+
+    Tabs.Custom:AddSection("↳ Animation")
+
+do
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+    local UserInputService = game:GetService("UserInputService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    local player = Players.LocalPlayer
+
+    local sprintModule
+    pcall(function()
+        sprintModule = require(ReplicatedStorage:WaitForChild("Systems").Character.Game.Sprinting)
+    end)
+
+    local KillersData = {
+        ["Survivors"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://134624270247120",
+                Walk = "rbxassetid://132377038617766",
+                Run  = "rbxassetid://115946474977409",
+            }
+        },
+        ["Shasher"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://116050994905421",
+                Walk = "rbxassetid://93622022596108",
+                Run  = "rbxassetid://93054787145505",
+            },
+            ["Pursuer"] = {
+                Idle = "rbxassetid://94895464960972",
+                Walk = "rbxassetid://100206079439305",
+                Run  = "rbxassetid://138660433982140",
+            },
+            ["subject_0"] = {
+                Idle = "rbxassetid://14301056458",
+                Walk = "rbxassetid://122325883800612",
+                Run  = "rbxassetid://97248175252805",
+            }
+        },
+        ["Coolkidd"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://18885903667",
+                Walk = "rbxassetid://18885906143",
+                Run  = "rbxassetid://96571077893813",
+            }
+        },
+        ["John Doe"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://105880087711722",
+                Walk = "rbxassetid://81193817424328",
+                Run  = "rbxassetid://132653655520682",
+            },
+            ["Shadow"] = {
+                Idle = "rbxassetid://00000000001",
+                Walk = "rbxassetid://00000000002",
+                Run  = "rbxassetid://00000000003",
+            }
+        },
+        ["Noli"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://93841120533318",
+                Walk = "rbxassetid://109700476007435",
+                Run  = "rbxassetid://117451341682452",
+            }
+        },
+        ["1x1x1x1"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://138754221537146",
+                Walk = "rbxassetid://131235528875091",
+                Run  = "rbxassetid://106485518413331",
+            },
+            ["Hacklord [Old]"] = {
+                Idle = "rbxassetid://82241652784826",
+                Walk = "rbxassetid://119242164490314",
+                Run  = "rbxassetid://92430101129682",
+            },
+            ["Hacklord [New]"] = {
+                Idle = "rbxassetid://106131211773069",
+                Walk = "rbxassetid://119112338263474",
+                Run  = "rbxassetid://85339002634979",
+            }
+        },
+        ["Herobrine"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://107799240559806",
+                Walk = "rbxassetid://89380107485006",
+                Run  = "rbxassetid://134157363854022",
+            }
+        },
+        ["Gubby"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://88333702239259",
+                Walk = "rbxassetid://115244584291581",
+                Run  = "rbxassetid://115244584291581",
+            }
+        },
+        ["Sancho"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://115073581864188",
+                Walk = "rbxassetid://95213748170889",
+                Run  = "rbxassetid://75409814098993",
+            }
+        },
+        ["Erlking"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://93727662665079",
+                Walk = "rbxassetid://97625643261790",
+                Run  = "rbxassetid://119357938208454",
+            }
+        },
+        ["Sukuna"] = {
+            ["Default"] = {
+                Idle = "rbxassetid://115268929362938",
+                Walk = "rbxassetid://123678890237669",
+                Run  = "rbxassetid://132086389849889",
+                Music = "rbxassetid://73595818073606"
+            }
+        }
+    }
+
+    local enabled = false
+    local selectedKiller = "Shasher"
+    local selectedSkin = "Default"
+    local character, humanoid, animator
+    local idleAnim, walkAnim, runAnim
+    local idleTrack, walkTrack, runTrack
+    local _isSprinting = false
+    local musicSound
+
+    local runningConn, heartbeatConn, characterRemovingConn, inputBeganConn, inputEndedConn = nil, nil, nil, nil, nil
+    local heartbeatAccumulator = 0
+    local HEARTBEAT_CHECK_INTERVAL = 0.12
+
+    local function stopAndClearTracks()
+        for _, track in ipairs({idleTrack, walkTrack, runTrack}) do
+            if track then pcall(function() track:Stop() end) end
+        end
+        idleTrack, walkTrack, runTrack = nil, nil, nil
+    end
+
+    local function stopMusic()
+        if musicSound then
+            pcall(function()
+                musicSound:Stop()
+                musicSound:Destroy()
+            end)
+            musicSound = nil
+        end
+    end
+
+    local function playMusicIfSukuna(set)
+        stopMusic()
+        if selectedKiller == "Sukuna" and set and set.Music then
+            local sound = Instance.new("Sound")
+            sound.SoundId = set.Music
+            sound.Looped = true
+            sound.Volume = 2
+            sound.Parent = workspace
+            sound:Play()
+            musicSound = sound
+        end
+    end
+
+    local function disconnectListeners()
+        for _, c in ipairs({runningConn, heartbeatConn, characterRemovingConn, inputBeganConn, inputEndedConn}) do
+            if c then pcall(function() c:Disconnect() end) end
+        end
+        runningConn, heartbeatConn, characterRemovingConn, inputBeganConn, inputEndedConn = nil, nil, nil, nil, nil
+    end
+
+    local function cleanupCurrentCharacter()
+        stopAndClearTracks()
+        stopMusic()
+        disconnectListeners()
+        animator, humanoid, character = nil, nil, nil
+    end
+
+    local function loadAnimObjects(killer, skin)
+        local killerTable = KillersData[killer]
+        if not killerTable then
+            warn("loadAnimObjects: killer không tồn tại:", tostring(killer))
+            return
+        end
+        local set = killerTable[skin or "Default"] or killerTable["Default"]
+        if not set then return end
+
+        idleAnim, walkAnim, runAnim = Instance.new("Animation"), Instance.new("Animation"), Instance.new("Animation")
+        idleAnim.Name, walkAnim.Name, runAnim.Name = "IdleAnim", "WalkAnim", "RunAnim"
+        idleAnim.AnimationId, walkAnim.AnimationId, runAnim.AnimationId = set.Idle, set.Walk, set.Run
+
+        playMusicIfSukuna(set)
+    end
+
+    local function playAnim(animObj, trackType)
+        if not animator then return end
+
+        if trackType ~= "Idle" and idleTrack then pcall(function() idleTrack:Stop() end) idleTrack=nil end
+        if trackType ~= "Walk" and walkTrack then pcall(function() walkTrack:Stop() end) walkTrack=nil end
+        if trackType ~= "Run" and runTrack then pcall(function() runTrack:Stop() end) runTrack=nil end
+
+        local track
+        if trackType=="Idle" and not idleTrack then idleTrack = animator:LoadAnimation(idleAnim) track=idleTrack
+        elseif trackType=="Walk" and not walkTrack then walkTrack = animator:LoadAnimation(walkAnim) track=walkTrack
+        elseif trackType=="Run" and not runTrack then runTrack = animator:LoadAnimation(runAnim) track=runTrack
+        else track = (trackType=="Idle" and idleTrack) or (trackType=="Walk" and walkTrack) or runTrack end
+
+        if track and not track.IsPlaying then pcall(function() track:Play() end) end
+    end
+
+    local function playIdle() playAnim(idleAnim,"Idle") end
+    local function playWalk() playAnim(walkAnim,"Walk") end
+    local function playRun() playAnim(runAnim,"Run") end
+
+    local function updateMovementState()
+        if not enabled or not character then return end
+        local moving=false
+        if humanoid and humanoid.MoveDirection then
+            moving = humanoid.MoveDirection.Magnitude>0
+            if not moving then
+                local root = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+                if root and root.Velocity.Magnitude>1 then moving=true end
+            end
+        end
+        if moving then
+            local sprintingNow = (sprintModule and sprintModule.IsSprinting) or _isSprinting
+            if sprintingNow then playRun() else playWalk() end
+        else
+            playIdle()
+        end
+    end
+
+    local function setupMovementListeners()
+        disconnectListeners()
+        inputBeganConn = UserInputService.InputBegan:Connect(function(input,gp) if gp then return end if input.KeyCode==Enum.KeyCode.LeftShift then _isSprinting=true end end)
+        inputEndedConn = UserInputService.InputEnded:Connect(function(input,gp) if gp then return end if input.KeyCode==Enum.KeyCode.LeftShift then _isSprinting=false end end)
+
+        if humanoid and humanoid.Running then
+            runningConn = humanoid.Running:Connect(function(speed) if not enabled then return end if speed>0 then updateMovementState() else playIdle() end end)
+        else
+            heartbeatAccumulator=0
+            heartbeatConn = RunService.Heartbeat:Connect(function(dt)
+                if not enabled or not character then return end
+                heartbeatAccumulator+=dt
+                if heartbeatAccumulator>=HEARTBEAT_CHECK_INTERVAL then
+                    heartbeatAccumulator=0
+                    updateMovementState()
+                end
+            end)
+        end
+    end
+
+    local function onCharacterBound(char)
+        cleanupCurrentCharacter()
+        character=char
+        humanoid=char:FindFirstChildOfClass("Humanoid") or char:FindFirstChildOfClass("AnimationController")
+        if humanoid then
+            animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+        end
+        characterRemovingConn = char.AncestryChanged:Connect(function(_,parent) if not parent then cleanupCurrentCharacter() end end)
+        if enabled then
+            loadAnimObjects(selectedKiller, selectedSkin)
+            setupMovementListeners()
+            updateMovementState()
+        end
+    end
+
+    player.CharacterAdded:Connect(onCharacterBound)
+    if player.Character then onCharacterBound(player.Character) end
+
+    local killerNames = {}
+    for name,_ in pairs(KillersData) do table.insert(killerNames, name) end
+    table.sort(killerNames)
+
+    local SkinDropdown -- khai báo trước
+
+    local killerDropdown = Tabs.Custom:AddDropdown("ChooseKillersDropdown", {
+        Title = "Choose Killers",
+        Values = killerNames,
+        Default = selectedKiller,
+        Multi = false,
+        Callback = function(value)
+            local ok, err = pcall(function()
+                selectedKiller = value
+                selectedSkin = "Default"
+
+                local skins = {}
+                local t = KillersData[selectedKiller] or {}
+                for sName,_ in pairs(t) do table.insert(skins, sName) end
+                if #skins == 0 then skins = {"Default"} end
+                table.sort(skins)
+
+                if SkinDropdown and type(SkinDropdown.SetValues)=="function" and type(SkinDropdown.SetValue)=="function" then
+                    SkinDropdown:SetValues(skins)
+                    pcall(function() SkinDropdown:SetValue(skins[1] or "Default") end)
+                end
+
+                if enabled and player.Character then
+                    loadAnimObjects(selectedKiller, selectedSkin)
+                    stopAndClearTracks()
+                    updateMovementState()
+                else
+                    stopMusic()
+                end
+            end)
+            if not ok then warn("ChooseKillersDropdown callback error:", err) end
+        end
+    })
+
+    SkinDropdown = Tabs.Custom:AddDropdown("ChooseSkinDropdown", {
+        Title = "Choose Skin",
+        Values = {"Default"},
+        Default = "Default",
+        Multi = false,
+        Callback = function(value)
+            local ok, err = pcall(function()
+                selectedSkin = value
+                if enabled and player.Character then
+                    loadAnimObjects(selectedKiller, selectedSkin)
+                    stopAndClearTracks()
+                    updateMovementState()
+                else
+                    stopMusic()
+                end
+            end)
+            if not ok then warn("SkinDropdown callback error:", err) end
+        end
+    })
+
+    Tabs.Custom:AddToggle("FakeKillersToggle", {
+        Title = "Fake Killers",
+        Default = false,
+        Callback = function(state)
+            local ok, err = pcall(function()
+                enabled = state
+                if enabled then
+                    if player.Character then
+                        loadAnimObjects(selectedKiller, selectedSkin)
+                        onCharacterBound(player.Character)
+                    end
+                else
+                    stopAndClearTracks()
+                    disconnectListeners()
+                    stopMusic()
+                end
+            end)
+            if not ok then warn("FakeKillersToggle callback error:", err) end
+        end
+    })
+end
+
+
+
+    Tabs.Custom:AddSection("↳ Skill")
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local BUTTON_SIZE = 48
+local FramesLocked = true
+local createdFrames = {}
+
+local function makeDraggable(frame)
+    local dragging, dragStart, startPos
+
+    frame.InputBegan:Connect(function(input)
+        if not FramesLocked and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+            dragging = true
+            dragStart = input.Position
+            startPos = frame.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
+            end)
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and not FramesLocked and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local d = input.Position - dragStart
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
+        end
+    end)
+end
+
+local function createGui(name)
+    local g = Instance.new("ScreenGui")
+    g.Name = name
+    g.Enabled = false
+    g.ResetOnSpawn = false
+    g.IgnoreGuiInset = true
+    g.Parent = playerGui
+    return g
+end
+
+local function createButton(gui, data, pos)
+    local frame = Instance.new("Frame")
+    frame.Name = data.Name .. "_Frame"
+    frame.Size = UDim2.new(0, BUTTON_SIZE, 0, BUTTON_SIZE)
+    frame.Position = pos
+    frame.BackgroundTransparency = 1
+    frame.Parent = gui
+    frame.Active = true
+
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(1, 0)
+
+    local btn = Instance.new("ImageButton")
+    btn.Name = data.Name
+    btn.Image = "rbxassetid://" .. data.ImageId
+    btn.BackgroundTransparency = 1
+    btn.Size = UDim2.new(1, 0, 1, 0)
+    btn.ScaleType = Enum.ScaleType.Fit
+    btn.Parent = frame
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(1, 0)
+
+    btn.MouseButton1Click:Connect(function()
+        if not FramesLocked then return end
+
+        local char = player.Character or player.CharacterAdded:Wait()
+        local humanoid = char:FindFirstChildOfClass("Humanoid")
+        if not humanoid then return end
+
+        local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+        local anim = Instance.new("Animation")
+        anim.AnimationId = "rbxassetid://" .. data.AnimationId
+        animator:LoadAnimation(anim):Play()
+
+        if data.PlayMusic and data.MusicId then
+            local s = Instance.new("Sound")
+            s.SoundId = "rbxassetid://" .. data.MusicId
+            s.Parent = char:FindFirstChild("Head") or playerGui
+            s.Volume = 1
+            s:Play()
+            s.Ended:Connect(function() s:Destroy() end)
+        end
+    end)
+
+    makeDraggable(frame)
+
+    btn.Visible = FramesLocked
+    frame.BackgroundTransparency = FramesLocked and 1 or 0.3
+
+    table.insert(createdFrames, frame)
+end
+
+local function loadButtonGroup(config)
+    local gui = createGui(config.GuiName)
+
+    for i, d in ipairs(config.Buttons) do
+        createButton(gui, d, config.Positions[i])
+    end
+
+    Tabs.Custom:AddToggle(config.ToggleName, {
+        Title = config.DisplayName,
+        Default = false
+    }):OnChanged(function(v)
+        gui.Enabled = v
+    end)
+
+    Tabs.Custom:AddToggle(config.LockToggle, {
+        Title = "Lock Buttons",
+        Default = true
+    }):OnChanged(function(v)
+        FramesLocked = v
+        for _, frame in ipairs(createdFrames) do
+            local b = frame:FindFirstChildOfClass("ImageButton")
+            if b then b.Visible = v end
+            frame.BackgroundTransparency = v and 1 or 0.3
+        end
+    end)
+
+    Tabs.Custom:AddInput(config.SizeInput, {
+        Title = "Button Size",
+        Default = tostring(BUTTON_SIZE),
+        Numeric = true,
+        Finished = true
+    }):OnChanged(function(value)
+        local num = tonumber(value)
+        if num and num > 0 then
+            BUTTON_SIZE = num
+            for _, frame in ipairs(createdFrames) do
+                frame.Size = UDim2.new(0, BUTTON_SIZE, 0, BUTTON_SIZE)
+                local btn = frame:FindFirstChildOfClass("ImageButton")
+                if btn then btn.Size = UDim2.new(1, 0, 1, 0) end
+            end
+        end
+    end)
+end
+
+loadButtonGroup({
+    GuiName = "SukunaGUI",
+    ToggleName = "SukunaSkill",
+    DisplayName = "Sukuna Skill",
+    LockToggle = "SukunaLock",
+    SizeInput = "SukunaSize",
+
+    Buttons = {
+        {Name="Btn1", AnimationId="135853087227453", PlayMusic=true, MusicId="81361259756089", ImageId="134210378382767"},
+        {Name="Btn2", AnimationId="99784586201997",  PlayMusic=false, ImageId="134210378382767"},
+        {Name="Btn3", AnimationId="121162477402224", PlayMusic=true, MusicId="120185817748858", ImageId="85785826985052"},
+        {Name="Btn4", AnimationId="101816924844805", PlayMusic=true, MusicId="88406027536494", ImageId="85785826985052"}
+    },
+
+    Positions = {
+        UDim2.new(0,80,0,200),
+        UDim2.new(0,140,0,200),
+        UDim2.new(0,200,0,200),
+        UDim2.new(0,260,0,200),
+    }
+})
+
+
+loadButtonGroup({
+    GuiName = "Guest1337GUI",
+    ToggleName = "GuestSkill",
+    DisplayName = "Guest1337 Skill",
+    LockToggle = "Guest1337Lock",
+    SizeInput = "Guest1337Size",
+
+    Buttons = {
+        {Name="Btn1", AnimationId="72722244508749", PlayMusic=false, ImageId="87293861183080"},
+        {Name="Btn2", AnimationId="96959123077498", PlayMusic=false, ImageId="87293861183080"},
+        {Name="Btn3", AnimationId="87259391926321", PlayMusic=false, ImageId="87293861183080"}
+    },
+
+    Positions = {
+        UDim2.new(0,80,0,200),
+        UDim2.new(0,140,0,200),
+        UDim2.new(0,200,0,200),
+    }
 })
 
 local InfStaminaEnabled = false
