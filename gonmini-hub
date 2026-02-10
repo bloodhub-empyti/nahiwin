@@ -6,7 +6,7 @@ local Window = Fluent:CreateWindow({
     Title = "Gonmini Hub[Beta ☄] | Forsaken |",
     SubTitle = "Version 0.0.56",
     Search = true,
-    Icon = "rbxassetid://82795327169782",
+    Icon = "rbxassetid://70839490074333",
     TabWidth = 160,
     Size = UDim2.fromOffset(480, 360),
     Acrylic = true,
@@ -471,7 +471,7 @@ local Options = Fluent.Options
 
     Tabs.About:AddParagraph({
         Title = "Dev Script",
-        Content = "• baucua.c - Admin\n• Nh_starlight -  fix bug/n"
+        Content = "• baucua.c - Admin\n• Nh_starlight and sjssjs113 VN -  test update"
     })
 
     Tabs.About:AddSection("↳ Links")
@@ -674,7 +674,7 @@ local function StopFarmLoop()
 end
 
 Tabs.Farm:AddToggle("KillersFarmV2", {
-    Title = "Killers Farm V2",
+    Title = "Killers Farm",
     Default = false,
     Callback = function(Value)
         farmActive = Value
