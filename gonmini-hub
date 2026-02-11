@@ -1,6 +1,6 @@
 repeat task.wait() until game:IsLoaded()
 
-local ForsakenID = 18687417158
+local ForsakenID = 6331902150
 
 local BloxFruitsIDs = {
     [2753915549] = true, -- Sea 1
