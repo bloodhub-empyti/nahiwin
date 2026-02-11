@@ -4104,6 +4104,60 @@ Tabs.Misc:AddToggle("ShowChat", {
     end
 })
 
+Tabs.Misc:AddButton("Bypass antichest", {
+    Title = "Bypass antichest",
+    Callback = function()
+    local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("RunService")
+local v_u_3 = game:GetService("StarterPlayer")
+local v4 = game:GetService("Players")
+local v5 = v1:WaitForChild("Controllers")
+local v_u_6 = require(v5.CharacterController)
+local v_u_7 = v4.LocalPlayer
+local v_u16 = {
+    ["GetCurrentJumpHeight"] = function()
+        -- upvalues: (copy) v_u_3, (copy) v_u_6, (copy) v_u_7
+        local v8 = v_u3.CharacterJumpHeight
+        local v9, , _ = v_u_6:GetCharacter()
+        if not v9 then
+            return 0
+        end
+        local v10 = v9:FindFirstChildOfClass("Tool")
+        if v10 then
+            local v11 = v10:GetAttribute("JumpModifier")
+            if v11 then
+                v8 = v8 * v11
+            end
+        end
+        if v_u7:GetAttribute("Stealing") then
+            v8 = v8 * 0.6
+        end
+        return math.clamp(v8, 0, (1 / 0))
+    end,
+    ["GetCurrentWalkSpeed"] = function()
+        -- upvalues: (copy) v_u_3, (copy) v_u_6, (copy) v_u_7
+        local v12 = v_u3.CharacterWalkSpeed
+        local v13, , _ = v_u_6:GetCharacter()
+        if not v13 then
+            return 0
+        end
+        local v14 = v13:FindFirstChildOfClass("Tool")
+        if v14 then
+            local v15 = v14:GetAttribute("SpeedModifier")
+            if v15 then
+                v12 = v12 * v15
+            end
+        end
+        if v_u7:GetAttribute("Stealing") then
+            v12 = v12 * 0.6
+        end
+        return math.clamp(v12, 0, (1 / 0))
+    end,
+    ["Start"] = function() end
+}
+return v_u_16
+})
+
 local ActiveRemoveAll = false
 
 local effectNames = {
