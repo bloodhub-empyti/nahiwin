@@ -4221,4 +4221,4 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({ Title = "Gonmini Hub", Content = "Forsaken script loaded successfully!", Duration = 5 })
-SaveManager:LoadAutoloadConfig()rem:Disconnect() end)
+SaveManager:LoadAutoloadConfig()rem:Disconnect()
