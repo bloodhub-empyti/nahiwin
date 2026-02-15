@@ -3766,6 +3766,16 @@ Tabs.Visual:AddToggle("ESP_Subspace", {
     end
 })
 
+task.spawn(function()
+    while true do
+        for obj, data in pairs(ESP.Objects) do
+            ESP:Remove(obj)
+            ESP:_ScheduleCreate(obj, data.Type)
+        end
+        task.wait(0.2)
+    end
+end)
+
 local fullBrightEnabled = false
 local fullBrightConn = nil
 
