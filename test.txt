@@ -113,7 +113,7 @@ local Paragraph = Tab:CreateParagraph({
 
 Window:CreateHomeTab({
     SupportedExecutors = {},
-    DiscordInvite = "https://discord.gg/BV7vp2APC2",
+    DiscordInvite = "https://discord.gg/hFjByZETdx",
     Icon = 1,
 })
 
@@ -138,7 +138,218 @@ local Button = Tab:CreateButton({
     Name = "killingcheats",
     Description = nil,
         Callback = function()
-loadstring(game:HttpGet("https://pastebin.com/raw/09AP8fzG"))()
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KalachunkTargeterGUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Уведомление при запуске
+local notification = Instance.new("TextLabel")
+notification.Name = "🇺🇸Recomendation"
+notification.Parent = screenGui
+notification.Size = UDim2.new(0.4, 0, 0.1, 0)
+notification.Position = UDim2.new(0.3, 0, 0.05, 0)
+notification.Text = "Better use fast weapons like cleavers!"
+notification.TextColor3 = Color3.new(1, 1, 1)
+notification.BackgroundColor3 = Color3.new(0, 0, 0)
+notification.BackgroundTransparency = 0.5
+notification.TextScaled = true
+notification.Font = Enum.Font.SourceSansBold
+notification.TextStrokeTransparency = 0
+notification.TextStrokeColor3 = Color3.new(0, 0, 0)
+notification.BorderSizePixel = 0
+
+local notificationCorner = Instance.new("UICorner")
+notificationCorner.Parent = notification
+notificationCorner.CornerRadius = UDim.new(0.1, 0)
+
+wait(3) -- Уведомление показывается 3 секунды
+for i = 1, 10 do
+    notification.BackgroundTransparency = notification.BackgroundTransparency + 0.1
+    notification.TextTransparency = notification.TextTransparency + 0.1
+    wait(0.1)
+end
+notification:Destroy()
+
+-- Уведомление при запуске
+local notification = Instance.new("TextLabel")
+notification.Name = "🇷🇺Рекомендация"
+notification.Parent = screenGui
+notification.Size = UDim2.new(0.4, 0, 0.1, 0)
+notification.Position = UDim2.new(0.3, 0, 0.05, 0)
+notification.Text = "Лучше использовать быстрые оружия как тесаки!"
+notification.TextColor3 = Color3.new(1, 1, 1)
+notification.BackgroundColor3 = Color3.new(0, 0, 0)
+notification.BackgroundTransparency = 0.5
+notification.TextScaled = true
+notification.Font = Enum.Font.SourceSansBold
+notification.TextStrokeTransparency = 0
+notification.TextStrokeColor3 = Color3.new(0, 0, 0)
+notification.BorderSizePixel = 0
+
+local notificationCorner = Instance.new("UICorner")
+notificationCorner.Parent = notification
+notificationCorner.CornerRadius = UDim.new(0.1, 0)
+
+wait(3) -- Уведомление показывается 3 секунды
+for i = 1, 10 do
+    notification.BackgroundTransparency = notification.BackgroundTransparency + 0.1
+    notification.TextTransparency = notification.TextTransparency + 0.1
+    wait(0.1)
+end
+notification:Destroy()
+
+-- Основной интерфейс
+local frame = Instance.new("Frame")
+frame.Parent = screenGui
+frame.Size = UDim2.new(0.3, 0, 0.4, 0)
+frame.Position = UDim2.new(0.35, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BackgroundTransparency = 0.5
+frame.BorderSizePixel = 0
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.Parent = frame
+uiCorner.CornerRadius = UDim.new(0.1, 0)
+
+local border = Instance.new("UIStroke")
+border.Parent = frame
+border.Color = Color3.new(1, 1, 1)
+border.Thickness = 2
+border.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1, 0, 0.2, 0)
+title.Position = UDim2.new(0, 0, 0.05, 0)
+title.Text = "Kalachunk Targeter"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextScaled = true
+title.Font = Enum.Font.SourceSansBold
+title.BackgroundTransparency = 1
+title.TextStrokeTransparency = 0
+title.TextStrokeColor3 = Color3.new(0, 0, 0)
+
+local textBox = Instance.new("TextBox")
+textBox.Parent = frame
+textBox.Size = UDim2.new(0.8, 0, 0.15, 0)
+textBox.Position = UDim2.new(0.1, 0, 0.3, 0)
+textBox.PlaceholderText = "Nickname"
+textBox.Text = ""
+textBox.TextColor3 = Color3.new(1, 1, 1)
+textBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+textBox.BackgroundTransparency = 0.5
+textBox.Font = Enum.Font.SourceSans
+textBox.TextScaled = true
+textBox.ClearTextOnFocus = false
+
+local textBoxCorner = Instance.new("UICorner")
+textBoxCorner.Parent = textBox
+textBoxCorner.CornerRadius = UDim.new(0.1, 0)
+
+local startButton = Instance.new("TextButton")
+startButton.Parent = frame
+startButton.Size = UDim2.new(0.6, 0, 0.15, 0)
+startButton.Position = UDim2.new(0.2, 0, 0.6, 0)
+startButton.Text = "Start"
+startButton.TextColor3 = Color3.new(1, 1, 1)
+startButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+startButton.BackgroundTransparency = 0.5
+startButton.Font = Enum.Font.SourceSansBold
+startButton.TextScaled = true
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.Parent = startButton
+buttonCorner.CornerRadius = UDim.new(0.1, 0)
+
+local isTeleporting = false
+local stopTeleportation = false
+local targetPlayer = nil
+
+local function findPlayerByPartialName(partialName)
+    local players = game.Players:GetPlayers()
+    for _, player in ipairs(players) do
+        if player.Name:lower():find(partialName:lower()) then
+            return player
+        end
+    end
+    return nil
+end
+
+local function teleportBehindPlayer()
+    while isTeleporting and targetPlayer do
+        if not game.Players:FindFirstChild(targetPlayer.Name) then
+            print("Игрок вышел из игры")
+            break
+        end
+
+        if not targetPlayer.Character then
+            targetPlayer.CharacterAdded:Wait()
+        end
+
+        local targetRootPart = targetPlayer.Character:WaitForChild("HumanoidRootPart", 5)
+        local localRootPart = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+        if targetRootPart and localRootPart then
+            local offset = targetRootPart.CFrame.lookVector * -0
+            localRootPart.CFrame = targetRootPart.CFrame + offset
+        end
+
+        wait(0.1)
+    end
+    isTeleporting = false
+    stopTeleportation = false
+    startButton.Text = "Start"
+end
+
+startButton.MouseButton1Click:Connect(function()
+    if isTeleporting then
+        stopTeleportation = true
+        isTeleporting = false
+    else
+        local targetName = textBox.Text
+        if targetName ~= "" then
+            targetPlayer = findPlayerByPartialName(targetName)
+            if targetPlayer then
+                isTeleporting = true
+                startButton.Text = "Stop"
+                spawn(teleportBehindPlayer)
+            else
+                print("Ошибка: игрок с ником, содержащим '" .. targetName .. "', не найден!")
+            end
+        else
+            print("Ошибка: ник игрока не введен!")
+        end
+    end
+end)
+
+local userInputService = game:GetService("UserInputService")
+local dragging = false
+local dragStartPos = Vector2.new(0, 0)
+local frameStartPos = Vector2.new(0, 0)
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStartPos = Vector2.new(input.Position.X, input.Position.Y)
+        frameStartPos = Vector2.new(frame.Position.X.Scale, frame.Position.Y.Scale)
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+userInputService.TouchMoved:Connect(function(input)
+    if dragging then
+        local delta = Vector2.new(input.Position.X, input.Position.Y) - dragStartPos
+        local newX = frameStartPos.X + (delta.X / screenGui.AbsoluteSize.X)
+        local newY = frameStartPos.Y + (delta.Y / screenGui.AbsoluteSize.Y)
+        frame.Position = UDim2.new(newX, 0, newY, 0)
+    end
+end)
         end
 })
 
@@ -146,6 +357,15 @@ local Button = Tab:CreateButton({
     Name = "Tp is land"
     Description = nip,
         Callback = function()
-loadstring(game:HttpGet("https://pastebin.com/raw/Mj2W9Eai"))()
+local targetPosition = Vector3.new(2348.95, 223.69, 1051.41) -- Замените на нужные координаты
+
+-- Получаем персонажа игрока
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Телепортируем персонажа
+rootPart.CFrame = CFrame.new(targetPosition)
+print("Телепортация на координаты:", targetPosition)
         end
 })
