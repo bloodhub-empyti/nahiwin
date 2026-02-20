@@ -1,0 +1,151 @@
+local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/refs/heads/master/source.lua", true))()
+
+local Window = Luna:CreateWindow({
+    Name = "Luna Gui",
+    Subtitle = nil,
+    LogoID = "82795327169782",
+    LoadingEnabled = true,
+    LoadingTitle = "Luna Interface Suite",
+    LoadingSubtitle = "by Tran007",
+
+    ConfigSettings = {
+        RootFolder = nil,
+        ConfigFolder = "main"
+    },
+
+    KeySystem = false,
+    KeySettings = {
+        Title = "Luna Key",
+        Subtitle = "nope",
+        Note = "Get key here",
+        SaveInRoot = false,
+        SaveKey = true,
+        Key = {"Example Key"},
+        SecondAction = {
+            Enabled = true,
+            Type = "Link",
+            Parameter = ""
+        }
+    }
+})
+
+local Tab = Window:CreateTab({
+    Name = "Tab Example",
+    Icon = "view_in_ar",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+Luna:Notification({ 
+    Title = "Notification",
+    Icon = "notifications_active",
+    ImageSource = "Material",
+    Content = "Test"
+})
+
+Tab:CreateSection("Test")
+
+local Button = Tab:CreateButton({
+    Name = "Button Example!",
+    Description = nil,
+        Callback = function()
+
+        end
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Toggle Example",
+    Description = nil,
+    CurrentValue = false,
+        Callback = function(Value)
+
+        end
+}, "Toggle")
+
+local ColorPicker = Tab:CreateColorPicker({
+    Name = "Color Picker Example",
+    Color = Color3.fromRGB(86, 171, 128),
+    Flag = "ColorPicker1",
+    Callback = function(Value)
+
+    end
+}, "ColorPicker")
+
+local Slider = Tab:CreateSlider({
+    Name = "Slider Example",
+    Range = {0, 200},
+    Increment = 5,
+    CurrentValue = 100,
+        Callback = function(Value)
+
+        end
+}, "Slider")
+
+local Dropdown = Tab:CreateDropdown({
+    Name = "Dropdown Example",
+        Description = nil,
+    Options = {"Option 1","Option 2"},
+        CurrentOption = {"Option 1"},
+        MultipleOptions = false,
+        SpecialType = nil,
+        Callback = function(Options)
+
+    end
+}, "Dropdown")
+
+local Bind = Tab:CreateBind({
+    Name = "Luna Interface Bind",
+    Description = nil,
+    CurrentBind = "K",
+    HoldToInteract = false,
+        Callback = function()
+        end,
+
+    OnChangedCallback = function(Bind)
+     Window.Bind = Bind
+    end,
+}, "WindowMenuBind")
+
+local Paragraph = Tab:CreateParagraph({
+    Title = "Paragraph Example ",
+    Text = "This Is A Paragraph. You Can Type Very Long Strings Here And They'll Automatically Fit!?"
+})
+
+Window:CreateHomeTab({
+    SupportedExecutors = {},
+    DiscordInvite = "https://discord.gg/BV7vp2APC2",
+    Icon = 1,
+})
+
+Tab:BuildThemeSection()
+local Tab = Window:CreateTab({
+    Name = Suffer
+    Icon = "star"
+    ImageSoucre = "Material"
+    ShowTitle = true
+})
+
+Luna:Notification({ 
+    Title = "Notification",
+    Icon = "notifications_active",
+    ImageSource = "Material",
+    Content = "404"
+})
+
+Tab:CreateSection("404")
+
+local Button = Tab:CreateButton({
+    Name = "killingcheats",
+    Description = nil,
+        Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/09AP8fzG"))()
+        end
+})
+
+local Button = Tab:CreateButton({
+    Name = "Tp is land"
+    Description = nip,
+        Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/Mj2W9Eai"))()
+        end
+})
